@@ -53,6 +53,8 @@ function displayGifs() {
         $('#gifHolder').empty();
 
         results.forEach(renderGif);
+    }).fail(function(error) {
+        throw error;
     });
 }
 
