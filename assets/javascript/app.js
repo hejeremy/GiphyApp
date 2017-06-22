@@ -11,9 +11,8 @@
 //Start Here!
 
 var gifList = [
-    'dog',
-    'cat',
-    'mouse'
+    'cats',
+    'dragon maid'
 ];
 
 function renderButton(inputArray) {
