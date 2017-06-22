@@ -96,8 +96,8 @@ $(document).on('click', '.gifClick', gifClick);
 function addButton() {
     event.preventDefault();
     var newValue = $('#searchValue').val().trim();
-    if (gifList.indexOf(newValue) > -1) {
-        alert('Search query ' + newValue + ' already in list!');
+    if (gifList.indexOf(newValue) > -1 || newValue === '') {
+        //alert('Search query ' + newValue + ' already in list!');
         return;
     } else {
         gifList.push(newValue);
