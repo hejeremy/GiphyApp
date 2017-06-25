@@ -9,29 +9,43 @@
 //
 
 //Start Here!
+var gifList = [];
 
-var gifList = [
-    'cats',
-    'dragon maid'
-];
+if (localStorage.getItem('jeremyGifList') === null) {
+    localStorage.setItem('jeremyGifList', JSON.stringify(gifList));
+} else {
+    gifList = JSON.parse(localStorage.getItem('jeremyGifList'));
+}
 
 function renderButton(inputArray) {
     $('#buttonHolder').empty();
+    localStorage.setItem('jeremyGifList', JSON.stringify(gifList));
 
     for (var i=0; i<inputArray.length; i++) {
+        var newDiv = $('<div>');
+        newDiv.addClass('buttonDiv');
+
         var newButton = $('<button>');
         newButton.addClass('btn btn-default displayGif');
         newButton.data('data-value', inputArray[i]);
         newButton.text(inputArray[i]);
-        $('#buttonHolder').append(newButton);
+
+        var removeThis = $('<button>');
+        removeThis.addClass('btn btn-default removeButton');
+        removeThis.data('data-value', inputArray[i]);
+        removeThis.text('x');
+
+        newDiv.append(newButton);
+        newDiv.append(removeThis);
+        $('#buttonHolder').append(newDiv);
     }
 }
 
 renderButton(gifList);
 
-$(document).on('mouseup', '.displayGif', displayGifs);
+$(document).on('mouseup', '.displayGif', displayGif);
 
-function displayGifs() {
+function displayGif() {
     var apiKey = 'dc6zaTOxFJmzC';
 
     var parameters = {
@@ -77,6 +91,13 @@ function renderGif(inputObject) {
     $('#gifHolder').append(newGif);
 }
 
+$(document).on('mouseup', '.removeButton', removeButton);
+
+function removeButton() {
+    gifList.splice(gifList.indexOf($(this).data('data-value')),1);
+    renderButton(gifList);
+}
+
 function gifClick() {
     var playStatus = $(this).attr('playStatus');
     var newStatus;
@@ -100,6 +121,7 @@ function addButton() {
         return;
     } else {
         gifList.push(newValue);
+        $('#searchValue').val('');
         renderButton(gifList);
     }
 }

@@ -3,3 +3,21 @@
     margin: 10px;
     float: left;
 }
+
+.displayGif {
+    border-right: none;
+    margin-right: none;
+    border-radius: 4px 0px 0px 4px;
+    float: left;
+}
+
+.removeButton {
+    border-left: none;
+    margin-left: none;
+    border-radius: 0px 4px 4px 0px;
+    float: right;
+}
+
+.buttonDiv {
+    float: left;
+}
