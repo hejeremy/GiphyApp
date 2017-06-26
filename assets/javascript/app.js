@@ -11,15 +11,16 @@
 //Start Here!
 var gifList = [];
 
-if (localStorage.getItem('jeremyGifList') === null) {
-    localStorage.setItem('jeremyGifList', JSON.stringify(gifList));
+//Access local storage
+if (localStorage.getItem('jeremyheGifList') === null) {
+    localStorage.setItem('jeremyheGifList', JSON.stringify(gifList));
 } else {
-    gifList = JSON.parse(localStorage.getItem('jeremyGifList'));
+    gifList = JSON.parse(localStorage.getItem('jeremyheGifList'));
 }
 
 function renderButton(inputArray) {
     $('#buttonHolder').empty();
-    localStorage.setItem('jeremyGifList', JSON.stringify(gifList));
+    localStorage.setItem('jeremyheGifList', JSON.stringify(gifList));
 
     for (var i=0; i<inputArray.length; i++) {
         var newDiv = $('<div>');
@@ -58,6 +59,9 @@ displayOptions.attr('id', 'displayOptions');
 for (var i=1; i<5; i++) {
     var option = $('<option>');
     option.attr('value', i*5);
+    if (i === 2) {
+        option.attr('selected', 'selected');
+    }
     option.text(i*5);
     displayOptions.append(option);
 }
@@ -71,14 +75,12 @@ displayOptions.on('change', function() {
 //Catagories such as trending, recent, etc
 var catagoryType = $('#catagoryType');
 catagoryOptions = $('<select>');
-catagoryOptions.append('<option value=\'search?\'>Search</option>');
+catagoryOptions.append('<option selected=\'selected\' value=\'search?\'>Search</option>');
 catagoryOptions.append('<option value=\'trending?\'>Trending</option>');
 //catagoryOptions.append('<option value=\'random?\'>Random</option>');
 catagoryType.html(catagoryOptions);
 catagoryOptions.on('change', function() {
-    if (searchQuery !== '') {
-        refreshButton.css('visibility', 'visible');
-    }
+    refreshButton.css('visibility', 'visible');
 });
 
 //Refresh button
@@ -126,6 +128,7 @@ function displayGif(inputQuery) {
     });
 }
 
+//Function for rendering gifs
 function renderGif(inputObject) {
     var newGif = $('<div>');
     newGif.addClass('gifFrame');
@@ -148,11 +151,13 @@ function renderGif(inputObject) {
 
 $(document).on('mouseup', '.removeButton', removeButton);
 
+//Function for removing an added query from the button list
 function removeButton() {
     gifList.splice(gifList.indexOf($(this).data('data-value')),1);
     renderButton(gifList);
 }
 
+//Handles when a gif is clicked
 function gifClick() {
     var playStatus = $(this).attr('playStatus');
     var newStatus;
@@ -168,6 +173,7 @@ function gifClick() {
 
 $(document).on('click', '.gifClick', gifClick);
 
+//Adds buttons from query search
 function addButton() {
     event.preventDefault();
     var newValue = $('#searchValue').val().trim();
@@ -182,6 +188,8 @@ function addButton() {
 }
 
 $(document).on('click', '#addGif', addButton);
+
+//Clears searchQuery and empties #gifHolder
 $(document).on('click', '#clearGif', function() {
     searchQuery = '';
     $('#gifHolder').empty();
