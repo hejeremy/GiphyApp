@@ -5,21 +5,28 @@
 }
 
 .displayGif {
-    border-right: none;
-    margin-right: none;
-    border-radius: 4px 0px 0px 4px;
-    float: left;
-}
-
-.removeButton {
     border-left: none;
     margin-left: none;
     border-radius: 0px 4px 4px 0px;
     float: right;
 }
 
+.removeButton {
+    border-right: none;
+    margin-right: none;
+    border-radius: 4px 0px 0px 4px;
+    float: left;
+}
+
 .buttonDiv {
     margin-left: 5px;
     margin-bottom: 5px;
     float: left;
+}
+
+.jumbotron {
+    padding: 10px;
+    h1 {
+        font-size: 20px;
+    }
 }

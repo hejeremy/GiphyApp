@@ -33,7 +33,7 @@ function renderButton(inputArray) {
         var removeThis = $('<button>');
         removeThis.addClass('btn btn-default removeButton');
         removeThis.data('data-value', inputArray[i]);
-        removeThis.text('x');
+        removeThis.text('X');
 
         newDiv.append(newButton);
         newDiv.append(removeThis);
@@ -43,19 +43,74 @@ function renderButton(inputArray) {
 
 renderButton(gifList);
 
-$(document).on('mouseup', '.displayGif', displayGif);
+//Creates a searchQuery value in case of refresh
+var searchQuery = '';
+$(document).on('mouseup', '.displayGif', function() {
+    searchQuery = $(this).data('data-value');
+    displayGif(searchQuery);
+});
 
-function displayGif() {
+//Options for different search parameters
+//Display limit
+var displayLimit = $('#displayLimit');
+var displayOptions = $('<select>');
+displayOptions.attr('id', 'displayOptions');
+for (var i=1; i<5; i++) {
+    var option = $('<option>');
+    option.attr('value', i*5);
+    option.text(i*5);
+    displayOptions.append(option);
+}
+displayLimit.html(displayOptions);
+displayOptions.on('change', function() {
+    if (searchQuery !== '') {
+        refreshButton.css('visibility', 'visible');
+    }
+});
+
+//Catagories such as trending, recent, etc
+var catagoryType = $('#catagoryType');
+catagoryOptions = $('<select>');
+catagoryOptions.append('<option value=\'search?\'>Search</option>');
+catagoryOptions.append('<option value=\'trending?\'>Trending</option>');
+//catagoryOptions.append('<option value=\'random?\'>Random</option>');
+catagoryType.html(catagoryOptions);
+catagoryOptions.on('change', function() {
+    if (searchQuery !== '') {
+        refreshButton.css('visibility', 'visible');
+    }
+});
+
+//Refresh button
+var refreshButton = $('<button>');
+refreshButton.addClass('btn btn-primary');
+refreshButton.attr('id', 'refreshButton');
+refreshButton.text('Reload Display');
+$('#extraButton').html(refreshButton);
+refreshButton.on('mouseup', function() {
+    displayGif(searchQuery);
+    refreshButton.css('visibility', 'hidden');
+});
+refreshButton.css('visibility', 'hidden');
+
+function displayGif(inputQuery) {
     var apiKey = 'dc6zaTOxFJmzC';
+    var apiURL = "https://api.giphy.com/v1/gifs/";
+    var searchType = catagoryOptions.val();
+    //console.log(searchType);
 
     var parameters = {
-        'q': $(this).data('data-value'),
+        'q': inputQuery,
         'api_key': apiKey,
-        'limit': 10,
+        'limit': parseInt(displayOptions.val()),
     }
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?"
+    //console.log(parseInt(displayOptions.val()));
+
+    var queryURL = "https://api.giphy.com/v1/gifs/"
+        + searchType
         + $.param(parameters);
+    //console.log(queryURL);
 
     $.ajax({
         url: queryURL,
@@ -128,5 +183,6 @@ function addButton() {
 
 $(document).on('click', '#addGif', addButton);
 $(document).on('click', '#clearGif', function() {
+    searchQuery = '';
     $('#gifHolder').empty();
 });
