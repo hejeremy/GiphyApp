@@ -9,7 +9,7 @@
 //
 
 //Start Here!
-var gifList = [];
+let gifList = [];
 
 //Access local storage
 if (localStorage.getItem('jeremyheGifList') === null) {
@@ -22,16 +22,16 @@ function renderButton(inputArray) {
     $('#buttonHolder').empty();
     localStorage.setItem('jeremyheGifList', JSON.stringify(gifList));
 
-    for (var i=0; i<inputArray.length; i++) {
-        var newDiv = $('<div>');
+    for (let i=0; i<inputArray.length; i++) {
+        const newDiv = $('<div>');
         newDiv.addClass('buttonDiv');
 
-        var newButton = $('<button>');
+        const newButton = $('<button>');
         newButton.addClass('btn btn-default displayGif');
         newButton.data('data-value', inputArray[i]);
         newButton.text(inputArray[i]);
 
-        var removeThis = $('<button>');
+        const removeThis = $('<button>');
         removeThis.addClass('btn btn-default removeButton');
         removeThis.data('data-value', inputArray[i]);
         removeThis.text('X');
@@ -45,7 +45,7 @@ function renderButton(inputArray) {
 renderButton(gifList);
 
 //Creates a searchQuery value in case of refresh
-var searchQuery = '';
+let searchQuery = '';
 $(document).on('mouseup', '.displayGif', function() {
     searchQuery = $(this).data('data-value');
     displayGif(searchQuery);
@@ -53,11 +53,11 @@ $(document).on('mouseup', '.displayGif', function() {
 
 //Options for different search parameters
 //Display limit
-var displayLimit = $('#displayLimit');
-var displayOptions = $('<select>');
+const displayLimit = $('#displayLimit');
+const displayOptions = $('<select>');
 displayOptions.attr('id', 'displayOptions');
-for (var i=1; i<5; i++) {
-    var option = $('<option>');
+for (let i=1; i<5; i++) {
+    const option = $('<option>');
     option.attr('value', i*5);
     if (i === 2) {
         option.attr('selected', 'selected');
@@ -73,7 +73,7 @@ displayOptions.on('change', function() {
 });
 
 //Catagories such as trending, recent, etc
-var catagoryType = $('#catagoryType');
+const catagoryType = $('#catagoryType');
 catagoryOptions = $('<select>');
 catagoryOptions.append('<option selected=\'selected\' value=\'search?\'>Search</option>');
 catagoryOptions.append('<option value=\'trending?\'>Trending</option>');
@@ -84,7 +84,7 @@ catagoryOptions.on('change', function() {
 });
 
 //Refresh button
-var refreshButton = $('<button>');
+const refreshButton = $('<button>');
 refreshButton.addClass('btn btn-primary');
 refreshButton.attr('id', 'refreshButton');
 refreshButton.text('Reload Display');
@@ -96,12 +96,12 @@ refreshButton.on('mouseup', function() {
 refreshButton.css('visibility', 'hidden');
 
 function displayGif(inputQuery) {
-    var apiKey = 'dc6zaTOxFJmzC';
-    var apiURL = "https://api.giphy.com/v1/gifs/";
-    var searchType = catagoryOptions.val();
+    const apiKey = 'dc6zaTOxFJmzC';
+    const apiURL = "https://api.giphy.com/v1/gifs/";
+    const searchType = catagoryOptions.val();
     //console.log(searchType);
 
-    var parameters = {
+    const parameters = {
         'q': inputQuery,
         'api_key': apiKey,
         'limit': parseInt(displayOptions.val()),
@@ -109,7 +109,7 @@ function displayGif(inputQuery) {
 
     //console.log(parseInt(displayOptions.val()));
 
-    var queryURL = "https://api.giphy.com/v1/gifs/"
+    const queryURL = "https://api.giphy.com/v1/gifs/"
         + searchType
         + $.param(parameters);
     //console.log(queryURL);
@@ -118,7 +118,7 @@ function displayGif(inputQuery) {
         url: queryURL,
         method: 'GET'
     }).done(function(info) {
-        var results = info.data;
+        const results = info.data;
 
         $('#gifHolder').empty();
 
@@ -130,14 +130,14 @@ function displayGif(inputQuery) {
 
 //Function for rendering gifs
 function renderGif(inputObject) {
-    var newGif = $('<div>');
+    const newGif = $('<div>');
     newGif.addClass('gifFrame');
-    var newP = $('<p>');
+    const newP = $('<p>');
     newP.text('Rating: ' + inputObject.rating.toUpperCase());
-    var newImage = $('<img>');
+    const newImage = $('<img>');
     newImage.addClass('gifClick');
-    var staticImage = inputObject.images.fixed_height_still.url;
-    var animatedImage = inputObject.images.fixed_height.url;
+    const staticImage = inputObject.images.fixed_height_still.url;
+    const animatedImage = inputObject.images.fixed_height.url;
     newImage.attr('src', staticImage);
     newImage.attr('animatedLink', animatedImage);
     newImage.attr('staticLink', staticImage);
@@ -159,8 +159,8 @@ function removeButton() {
 
 //Handles when a gif is clicked
 function gifClick() {
-    var playStatus = $(this).attr('playStatus');
-    var newStatus;
+    const playStatus = $(this).attr('playStatus');
+    let newStatus;
 
     if (playStatus === 'static') {
         $(this).attr('playStatus', 'animated');
@@ -176,7 +176,7 @@ $(document).on('click', '.gifClick', gifClick);
 //Adds buttons from query search
 function addButton() {
     event.preventDefault();
-    var newValue = $('#searchValue').val().trim();
+    const newValue = $('#searchValue').val().trim();
     if (gifList.indexOf(newValue) > -1 || newValue === '') {
         //alert('Search query ' + newValue + ' already in list!');
         return;
